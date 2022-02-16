@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-const CharactersService = require("./../service/");
-const charactersApiHandler = new CharactersService();
+const CharactersApi = require("../services/charactersApi");
+const charactersApiHandler = new CharactersApi();
 
 // Characters list
 router.get("/list", (req, res) => {
@@ -12,5 +12,12 @@ router.get("/list", (req, res) => {
     .catch((error) => console.log(error));
 });
 
+router.get("/:id", (req, res) => {
+  charactersApiHandler
+    .getOneCharacter(req.params.id)
+      .then((response)=>{
+        res.render("pages/character-details", response.data)
+      }) //response.data BECAUSE WE GOT A JSON
+})
 
 module.exports = router;
